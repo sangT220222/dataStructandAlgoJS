@@ -47,6 +47,18 @@ class LinkedList {
     }
     return count;
   }
+
+  headOfList() {
+    return this.head.value;
+  }
+
+  tailOfList() {
+    let current = this.head;
+    while (current.next !== null) {
+      current = current.next;
+    }
+    return current.value;
+  }
 }
 
 let list = new LinkedList();
@@ -59,3 +71,6 @@ list.prependNode(77);
 list.displayList();
 
 // console.log(list.sizeOfList());
+
+// console.log("Head of List:" + list.headOfList());
+console.log("Tail of List:" + list.tailOfList());
