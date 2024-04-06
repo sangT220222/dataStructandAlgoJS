@@ -19,7 +19,7 @@ class LinkedList {
     }
   }
 
-  insertNode(value) {
+  appendNode(value) {
     let node = new createNode(value);
     if (!this.head) {
       this.head = node;
@@ -31,10 +31,19 @@ class LinkedList {
       current.next = node;
     }
   }
+
+  prependNode(value) {
+    let node = new createNode(value);
+    node.next = this.head;
+    this.head = node;
+  }
 }
 
 let list = new LinkedList();
-list.insertNode(3);
-list.insertNode(69);
+list.appendNode(3);
+list.appendNode(69);
 
+list.displayList();
+
+list.prependNode(77);
 list.displayList();
