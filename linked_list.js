@@ -59,18 +59,32 @@ class LinkedList {
     }
     return current.value;
   }
+
+  getNodeAt(index) {
+    let current = this.head;
+    try {
+      for (let i = 1; i <= index; i++) {
+        current = current.next;
+      }
+    } catch (error) {
+      return "No node at this index";
+    }
+    if (current === null) {
+      return "No node at this index";
+    }
+    return current.value;
+  }
 }
 
 let list = new LinkedList();
 list.appendNode(3);
 list.appendNode(69);
-
-list.displayList();
-
 list.prependNode(77);
+
 list.displayList();
 
 // console.log(list.sizeOfList());
 
 // console.log("Head of List:" + list.headOfList());
-console.log("Tail of List:" + list.tailOfList());
+// console.log("Tail of List:" + list.tailOfList());
+console.log(list.getNodeAt(3));
