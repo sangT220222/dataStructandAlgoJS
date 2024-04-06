@@ -111,6 +111,19 @@ class LinkedList {
       current = current.next;
     }
   }
+
+  toString() {
+    let current = this.head;
+    let string = "";
+    while (current !== null) {
+      string += "(" + current.value + ")";
+      if (current.next !== null) {
+        string += "->";
+      }
+      current = current.next;
+    }
+    return string;
+  }
 }
 
 let list = new LinkedList();
@@ -118,6 +131,7 @@ list.appendNode(3);
 list.appendNode(69);
 list.appendNode(88);
 list.prependNode(77);
+console.log(list.toString());
 
 // list.displayList();
 
@@ -128,6 +142,6 @@ list.prependNode(77);
 // console.log(list.getNodeAt(3));
 list.popNode();
 console.log("Last node removed");
-list.displayList();
 // console.log(list.containsValue(3));
-console.log(list.findValue(69));
+// console.log(list.findValue(69));
+console.log(list.toString());
