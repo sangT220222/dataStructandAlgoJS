@@ -74,6 +74,20 @@ class LinkedList {
     }
     return current.value;
   }
+
+  popNode() {
+    if (!this.head.next) {
+      this.head = null;
+    }
+    let prevNode = null;
+    let current = this.head;
+
+    while (current.next !== null) {
+      prevNode = current;
+      current = current.next;
+    }
+    prevNode.next = null;
+  }
 }
 
 let list = new LinkedList();
@@ -87,4 +101,8 @@ list.displayList();
 
 // console.log("Head of List:" + list.headOfList());
 // console.log("Tail of List:" + list.tailOfList());
-console.log(list.getNodeAt(3));
+// console.log(list.getNodeAt(3));
+list.popNode();
+console.log("Last node removed");
+
+list.displayList();
