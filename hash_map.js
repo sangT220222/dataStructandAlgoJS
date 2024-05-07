@@ -52,15 +52,35 @@ class HashMap {
     delete this.hashMap[hashedKey];
     return "Key has been deleted!";
   }
+
+  length() {
+    let count = 0;
+    for (const key in this.hashMap) {
+      count += 1;
+    }
+
+    return count;
+  }
+
+  clear() {
+    this.hashMap = new Array(this.capacity);
+  }
+
+  keys() {
+    const keysArr = [];
+    for (const key in this.hashMap) {
+      keysArr.push(this.hashMap[key].key);
+    }
+    return keysArr;
+  }
+  values() {
+    const valsArr = [];
+    for (const key in this.hashMap) {
+      valsArr.push(this.hashMap[key].value);
+    }
+    return valsArr;
+  }
 }
-
-// length() returns the number of stored keys in the hash map.
-
-// clear() removes all entries in the hash map.
-
-// keys() returns an array containing all the keys inside the hash map.
-
-// values() returns an array containing all the values.
 
 const testingMap = new HashMap(10); //creating a new hashmap
 testingMap.set(8, "value1");
@@ -68,4 +88,7 @@ testingMap.set(69, "value2");
 console.log(testingMap);
 console.log(testingMap.has(8));
 console.log(testingMap.remove(3443));
-console.log(testingMap);
+// testingMap.clear();
+
+console.log(testingMap.keys());
+console.log(testingMap.values());
