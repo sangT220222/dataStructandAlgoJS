@@ -80,7 +80,17 @@ class HashMap {
     }
     return valsArr;
   }
+
+  entries() {
+    const entries = [];
+    for (const key in this.hashMap) {
+      entries.push([this.hashMap[key].key, this.hashMap[key].value]);
+    }
+    return entries;
+  }
 }
+
+// entries() returns an array that contains each key, value pair. Example: [[firstKey, firstValue], [secondKey, secondValue]]
 
 const testingMap = new HashMap(10); //creating a new hashmap
 testingMap.set(8, "value1");
@@ -92,3 +102,4 @@ console.log(testingMap.remove(3443));
 
 console.log(testingMap.keys());
 console.log(testingMap.values());
+console.log(testingMap.entries());
