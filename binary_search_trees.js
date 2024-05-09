@@ -87,6 +87,25 @@ class Tree {
     return node;
   }
 
+
+  find(value, currentNode = this.rootNode){
+    if (currentNode === null) {
+      return 'Value not inside the tree';
+    }
+
+    if(currentNode.data === value){
+      return 'Value found in the tree';
+    }
+
+    //binary search
+    if(value > currentNode.data){
+      return this.find(value, currentNode.right);
+    }
+    else if (value < currentNode.data){
+      return this.find(value, currentNode.left);
+    }
+  }
+
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -101,10 +120,18 @@ class Tree {
   };
 }
 
-const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+//Write a find(value) function that returns the node with the given value.
 
-test.insert(69)
-test.prettyPrint()
 
-test.deleteNode(67,)
-test.prettyPrint()
+
+const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+
+test.insert(69);
+test.prettyPrint();
+
+test.deleteNode(67);
+test.prettyPrint();
+
+console.log(test.find(69));
+console.log(test.find(1000));
+
