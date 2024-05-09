@@ -48,7 +48,7 @@ class Tree {
     return node;
   }
 
-  deleteNode(value,node){
+  deleteNode(value,node=this.rootNode){
     //base case
     if(node === null){
       return node;
@@ -69,9 +69,22 @@ class Tree {
       else if(node.right === null){
         return node.left;
       }
-      //case 3 - when node have 2 children
+      //case 3 - when node have 2 children, getting the inorder sucessor
+      //node.right as the next minimum value after the node will be found in the right subtree!
+      let sucessor = this.findMin(node.right);
+      node.data = sucessor.data; //replace with the next minimum value
+      node.right = this.deleteNode(sucessor.data,node.right);
     }
-    
+
+    return node;
+  }
+
+  findMin(node){
+    //finding the minimum child of a node
+    while(node.left !== null){
+      node = node.left;
+    }
+    return node;
   }
 
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
@@ -90,6 +103,8 @@ class Tree {
 
 const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
-test.prettyPrint()
 test.insert(69)
+test.prettyPrint()
+
+test.deleteNode(67,)
 test.prettyPrint()
