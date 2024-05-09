@@ -19,7 +19,7 @@ class Tree {
     }
     const sortedUniqueArr = Array.from(new Set(array.sort((a,b) => a-b)));
    
-    // Step 2: Construct a balanced binary tree
+    // Step 2: Construct a balanced binary tree 
     //find the middle element of the array and make it the root of the tree, 
     //then perform the same operation on the left subarray for the root’s left child 
     //and the same operation on the right subarray for the root’s right child.
@@ -28,6 +28,24 @@ class Tree {
     const root = new Node(sortedUniqueArr[middle], this.buildTree(sortedUniqueArr.slice(0,middle)), this.buildTree(sortedUniqueArr.slice(middle+1)));
 
     return root;
+  }
+
+  insert(value, node = this.rootNode){
+    //need a base case as this will be recursion
+    if(node === null){
+      //insert here 
+      return new Node(value);
+    }
+    //compare value with root node first
+    if(value > node.data){
+      //go to the right
+      node.right = this.insert(value, node.right);
+    }else if(value < node.data){
+      //go to the left
+      node.left = this.insert(value, node.left);
+    }
+
+    return node;
   }
 
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
@@ -46,4 +64,6 @@ class Tree {
 
 const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
+test.prettyPrint()
+test.insert(69)
 test.prettyPrint()
