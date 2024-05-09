@@ -48,6 +48,32 @@ class Tree {
     return node;
   }
 
+  deleteNode(value,node){
+    //base case
+    if(node === null){
+      return node;
+    }
+
+    //traverse the tree
+    if(value > node.data){
+      node.right = this.deleteNode(value, node.right);
+    }
+    else if(value < node.data){
+      node.left = this.deleteNode(value, node.left);
+    }
+    else{ //where we have spotted the node in the tree
+      //case 1 & 2- node has no child or one child
+      if(node.left === null) {
+        return node.right; //returning the child of the node effectively deletes the parent node
+      }
+      else if(node.right === null){
+        return node.left;
+      }
+      //case 3 - when node have 2 children
+    }
+    
+  }
+
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
     if (node === null) {
       return;
