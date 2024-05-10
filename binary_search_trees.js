@@ -131,6 +131,13 @@ class Tree {
   }
 
   inOrder(callback){
+    //check if  node is empty -> return array
+
+    //traverse left subtree recursively
+
+    //push the node here as the end of left subtree would have been reached
+
+    //traverse right subtree recursively
     
   }
 
@@ -139,7 +146,7 @@ class Tree {
   }
 
   postOrder(callback){
-    
+
   }
 
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
