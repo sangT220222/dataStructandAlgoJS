@@ -106,6 +106,42 @@ class Tree {
     }
   }
 
+  levelOrder(callback){
+    //initialise an empty queue and empty array for results
+    if(!this.rootNode) return 'Empty';
+    var queue = [this.rootNode];
+    var traversedNodes = [];
+
+    //go through queue till it's not empty
+    while(queue.length !== 0 ){
+      const node = queue.shift(); // Dequeue node
+      if(!callback){
+        callback(node);
+      }
+      else{
+        traversedNodes.push(node);
+      }
+      if(node.left) queue.push(node.left);
+      if(node.right) queue.push(node.right);
+
+    }
+    //do recursion here
+
+    return traversedNodes;
+  }
+
+  inOrder(callback){
+    
+  }
+
+  preOrder(callback){
+
+  }
+
+  postOrder(callback){
+    
+  }
+
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -119,10 +155,6 @@ class Tree {
     }
   };
 }
-
-//Write a find(value) function that returns the node with the given value.
-
-
 
 const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
