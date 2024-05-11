@@ -229,6 +229,13 @@ class Tree {
     return Math.abs(rightHeight - leftHeight) <= 1;
   }
 
+  rebalance() {
+    if (!this.isBalanced()) {
+      const balancedTree = [...new Set(this.inOrder().sort((a, b) => a - b))];
+      this.rootNode = this.buildTree(balancedTree);
+    }
+  }
+
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
     if (node === null) {
       return;
