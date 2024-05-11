@@ -179,6 +179,21 @@ class Tree {
     if (!callback) return traversedNodes;
   }
 
+  height(node = this.rootNode) {
+    //base case
+    if (!node) return 0;
+
+    //do depth first search
+    //recursively find the bottom node on both left an right subtree
+    let leftDepth = this.height(node.left);
+    let rightDepth = this.height(node.right);
+
+    if (leftDepth > rightDepth) {
+      return leftDepth + 1;
+    }
+    return rightDepth + 1;
+  }
+
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -201,11 +216,21 @@ const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 test.insert(69);
 test.deleteNode(67);
-test.prettyPrint();
+// test.prettyPrint();
 
 console.log(test.find(69));
 console.log(test.find(1000));
 
-console.log("In-order traversal without callback:", test.inOrder());
-console.log("Pre-order traversal without callback:", test.preOrder());
-console.log("Post-order traversal without callback:", test.postOrder());
+// console.log("In-order traversal without callback:", test.inOrder());
+// console.log("Pre-order traversal without callback:", test.preOrder());
+// console.log("Post-order traversal without callback:", test.postOrder());
+
+// const logCallback = (data) => console.log(data);
+// console.log("In-order traversal with callback:");
+// test.inOrder(logCallback);
+// console.log("Pre-order traversal with callback:");
+// test.preOrder(logCallback);
+// console.log("Post-order traversal with callback:");
+// test.postOrder(logCallback);
+
+console.log(test.height());
