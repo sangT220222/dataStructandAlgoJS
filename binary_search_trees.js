@@ -199,12 +199,34 @@ class Tree {
   }
 
   depth(value) {
-    const result = this.find(value);
+    const result = this.find(value); //using the find() function in the class
     //we get given a value to look
     //can use find that we have made in this class
     if (!result.count) return "Value doesn't exist";
 
     return result.count;
+  }
+
+  isBalanced(node = this.rootNode) {
+    //get both left and right subtree's height
+    if (node === null) {
+      return true;
+    }
+    let leftHeight = 0,
+      rightHeight = 0;
+    let leftNode = node.left;
+    while (leftNode !== null) {
+      leftHeight++;
+      leftNode = leftNode.left;
+    }
+    let rightNode = node.right;
+
+    while (rightNode !== null) {
+      rightHeight++;
+      rightNode = rightNode.right;
+    }
+
+    return Math.abs(rightHeight - leftHeight) <= 1;
   }
 
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
@@ -247,3 +269,4 @@ console.log(test.find(69));
 
 console.log(test.height());
 console.log(test.depth(6345));
+console.log(test.isBalanced());
