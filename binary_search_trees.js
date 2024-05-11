@@ -88,20 +88,24 @@ class Tree {
     return node;
   }
 
-  find(value, currentNode = this.rootNode) {
+  find(value, currentNode = this.rootNode, count = 0) {
+    //for depth
     if (currentNode === null) {
       return "Value not inside the tree";
     }
 
     if (currentNode.data === value) {
-      return "Value found in the tree";
+      return {
+        count: count, //for the depth of the node
+        message: "Value found in the tree",
+      };
     }
 
     //binary search
     if (value > currentNode.data) {
-      return this.find(value, currentNode.right);
+      return this.find(value, currentNode.right, count + 1);
     } else if (value < currentNode.data) {
-      return this.find(value, currentNode.left);
+      return this.find(value, currentNode.left, count + 1);
     }
   }
 
@@ -194,6 +198,15 @@ class Tree {
     return rightDepth + 1;
   }
 
+  depth(value) {
+    const result = this.find(value);
+    //we get given a value to look
+    //can use find that we have made in this class
+    if (!result.count) return "Value doesn't exist";
+
+    return result.count;
+  }
+
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -219,7 +232,6 @@ test.deleteNode(67);
 // test.prettyPrint();
 
 console.log(test.find(69));
-console.log(test.find(1000));
 
 // console.log("In-order traversal without callback:", test.inOrder());
 // console.log("Pre-order traversal without callback:", test.preOrder());
@@ -234,3 +246,4 @@ console.log(test.find(1000));
 // test.postOrder(logCallback);
 
 console.log(test.height());
+console.log(test.depth(6345));
