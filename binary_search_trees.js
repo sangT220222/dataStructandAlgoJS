@@ -1,46 +1,49 @@
-class Node{
-  constructor(data, left = null , right = null){
+class Node {
+  constructor(data, left = null, right = null) {
     this.data = data;
     this.left = left;
-    this.right = right;  
+    this.right = right;
   }
-  
 }
 
 class Tree {
-  constructor(array){
+  constructor(array) {
     this.rootNode = this.buildTree(array);
   }
 
-  buildTree(array){
+  buildTree(array) {
     // Step 1: Sort the array and remove duplicates
-    if(array.length === 0){
+    if (array.length === 0) {
       return null;
     }
-    const sortedUniqueArr = Array.from(new Set(array.sort((a,b) => a-b)));
-   
-    // Step 2: Construct a balanced binary tree 
-    //find the middle element of the array and make it the root of the tree, 
-    //then perform the same operation on the left subarray for the root’s left child 
-    //and the same operation on the right subarray for the root’s right child.
-    const middle = parseInt(sortedUniqueArr.length/2); // slicing the array in half initially
+    const sortedUniqueArr = Array.from(new Set(array.sort((a, b) => a - b)));
 
-    const root = new Node(sortedUniqueArr[middle], this.buildTree(sortedUniqueArr.slice(0,middle)), this.buildTree(sortedUniqueArr.slice(middle+1)));
+    // Step 2: Construct a balanced binary tree
+    //find the middle element of the array and make it the root of the tree,
+    //then perform the same operation on the left subarray for the root’s left child
+    //and the same operation on the right subarray for the root’s right child.
+    const middle = parseInt(sortedUniqueArr.length / 2); // slicing the array in half initially
+
+    const root = new Node(
+      sortedUniqueArr[middle],
+      this.buildTree(sortedUniqueArr.slice(0, middle)),
+      this.buildTree(sortedUniqueArr.slice(middle + 1))
+    );
 
     return root;
   }
 
-  insert(value, node = this.rootNode){
+  insert(value, node = this.rootNode) {
     //need a base case as this will be recursion
-    if(node === null){
-      //insert here 
+    if (node === null) {
+      //insert here
       return new Node(value);
     }
     //compare value with root node first
-    if(value > node.data){
+    if (value > node.data) {
       //go to the right
       node.right = this.insert(value, node.right);
-    }else if(value < node.data){
+    } else if (value < node.data) {
       //go to the left
       node.left = this.insert(value, node.left);
     }
@@ -48,105 +51,149 @@ class Tree {
     return node;
   }
 
-  deleteNode(value,node=this.rootNode){
+  deleteNode(value, node = this.rootNode) {
     //base case
-    if(node === null){
+    if (node === null) {
       return node;
     }
 
     //traverse the tree
-    if(value > node.data){
+    if (value > node.data) {
       node.right = this.deleteNode(value, node.right);
-    }
-    else if(value < node.data){
+    } else if (value < node.data) {
       node.left = this.deleteNode(value, node.left);
-    }
-    else{ //where we have spotted the node in the tree
+    } else {
+      //where we have spotted the node in the tree
       //case 1 & 2- node has no child or one child
-      if(node.left === null) {
+      if (node.left === null) {
         return node.right; //returning the child of the node effectively deletes the parent node
-      }
-      else if(node.right === null){
+      } else if (node.right === null) {
         return node.left;
       }
       //case 3 - when node have 2 children, getting the inorder sucessor
       //node.right as the next minimum value after the node will be found in the right subtree!
       let sucessor = this.findMin(node.right);
       node.data = sucessor.data; //replace with the next minimum value
-      node.right = this.deleteNode(sucessor.data,node.right);
+      node.right = this.deleteNode(sucessor.data, node.right);
     }
 
     return node;
   }
 
-  findMin(node){
+  findMin(node) {
     //finding the minimum child of a node
-    while(node.left !== null){
+    while (node.left !== null) {
       node = node.left;
     }
     return node;
   }
 
-
-  find(value, currentNode = this.rootNode){
+  find(value, currentNode = this.rootNode) {
     if (currentNode === null) {
-      return 'Value not inside the tree';
+      return "Value not inside the tree";
     }
 
-    if(currentNode.data === value){
-      return 'Value found in the tree';
+    if (currentNode.data === value) {
+      return "Value found in the tree";
     }
 
     //binary search
-    if(value > currentNode.data){
+    if (value > currentNode.data) {
       return this.find(value, currentNode.right);
-    }
-    else if (value < currentNode.data){
+    } else if (value < currentNode.data) {
       return this.find(value, currentNode.left);
     }
   }
 
-  levelOrder(callback){
+  levelOrder(callback) {
     //initialise an empty queue and empty array for results
-    if(!this.rootNode) return 'Empty';
+    if (!this.rootNode) return "Empty";
     var queue = [this.rootNode];
     var traversedNodes = [];
 
     //go through queue till it's not empty
-    while(queue.length !== 0 ){
+    while (queue.length !== 0) {
       const node = queue.shift(); // Dequeue node
-      if(!callback){
+      if (!callback) {
         callback(node);
-      }
-      else{
+      } else {
         traversedNodes.push(node);
       }
-      if(node.left) queue.push(node.left);
-      if(node.right) queue.push(node.right);
-
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
     //do recursion here
 
     return traversedNodes;
   }
 
-  inOrder(callback){
+  inOrder(callback, node = this.rootNode) {
     //check if  node is empty -> return array
+    if (!node) return;
+
+    const traversedNodes = [];
+
+    if (!callback) {
+      traversedNodes.push(...this.inOrder(null, node.left));
+      traversedNodes.push(this.inOrder(node));
+      traversedNodes.push(...this.inOrder(null, node.right));
+
+      return traversedNodes;
+    }
 
     //traverse left subtree recursively
-
+    this.inOrder(callback, node.left);
     //push the node here as the end of left subtree would have been reached
+    callback(node);
 
     //traverse right subtree recursively
-    
+    this.inOrder(callback, node.right);
   }
 
-  preOrder(callback){
+  preOrder(callback, node = this.rootNode) {
+    if (!node) return;
 
+    const traversedNodes = [];
+
+    if (!callback) {
+      traversedNodes.push(this.inOrder(node));
+      traversedNodes.push(...this.inOrder(null, node.left));
+      traversedNodes.push(...this.inOrder(null, node.right));
+
+      return traversedNodes;
+    }
+
+    //root node first
+    callback(node);
+
+    //traverse left subtree recursively
+    this.preOrder(callback, node.left);
+
+    //traverse right subtree recursively
+    this.preOrder(callback, node.right);
   }
 
-  postOrder(callback){
+  postOrder(callback, node = this.rootNode) {
+    if (!node) return;
 
+    const traversedNodes = [];
+
+    if (!callback) {
+      traversedNodes.push(...this.inOrder(null, node.left));
+      traversedNodes.push(...this.inOrder(null, node.right));
+      traversedNodes.push(this.inOrder(node));
+
+      return traversedNodes;
+    }
+
+    //traverse left subtree recursively
+    this.postOrder(callback, node.left);
+
+    //traverse right subtree recursively
+    this.postOrder(callback, node.right);
+
+    //root node last
+    callback(node);
   }
 
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
@@ -154,13 +201,17 @@ class Tree {
       return;
     }
     if (node.right !== undefined) {
-      this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+      this.prettyPrint(
+        node.right,
+        `${prefix}${isLeft ? "│   " : "    "}`,
+        false
+      );
     }
     console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
     if (node.left !== null) {
       this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
-  };
+  }
 }
 
 const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
@@ -173,4 +224,3 @@ test.prettyPrint();
 
 console.log(test.find(69));
 console.log(test.find(1000));
-
