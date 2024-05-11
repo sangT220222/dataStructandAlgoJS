@@ -128,72 +128,55 @@ class Tree {
   }
 
   inOrder(callback, node = this.rootNode) {
+    var traversedNodes = [];
     //check if  node is empty -> return array
-    if (!node) return;
-
-    const traversedNodes = [];
-
-    if (!callback) {
-      traversedNodes.push(...this.inOrder(null, node.left));
-      traversedNodes.push(this.inOrder(node));
-      traversedNodes.push(...this.inOrder(null, node.right));
-
-      return traversedNodes;
-    }
+    if (!node) return traversedNodes;
 
     //traverse left subtree recursively
-    this.inOrder(callback, node.left);
-    //push the node here as the end of left subtree would have been reached
-    callback(node);
+    traversedNodes.push(...this.inOrder(callback, node.left));
+
+    traversedNodes.push(node);
+
+    if (callback) callback(node);
 
     //traverse right subtree recursively
-    this.inOrder(callback, node.right);
+    traversedNodes.push(...this.inOrder(callback, node.right));
+
+    if (!callback) return traversedNodes;
   }
 
   preOrder(callback, node = this.rootNode) {
-    if (!node) return;
+    var traversedNodes = [];
+    //check if  node is empty -> return array
+    if (!node) return traversedNodes;
 
-    const traversedNodes = [];
-
-    if (!callback) {
-      traversedNodes.push(this.inOrder(node));
-      traversedNodes.push(...this.inOrder(null, node.left));
-      traversedNodes.push(...this.inOrder(null, node.right));
-
-      return traversedNodes;
-    }
-
-    //root node first
-    callback(node);
+    traversedNodes.push(node);
+    if (callback) callback(node);
 
     //traverse left subtree recursively
-    this.preOrder(callback, node.left);
+    traversedNodes.push(...this.preOrder(callback, node.left));
 
     //traverse right subtree recursively
-    this.preOrder(callback, node.right);
+    traversedNodes.push(...this.preOrder(callback, node.right));
+
+    if (!callback) return traversedNodes;
   }
 
   postOrder(callback, node = this.rootNode) {
-    if (!node) return;
-
-    const traversedNodes = [];
-
-    if (!callback) {
-      traversedNodes.push(...this.inOrder(null, node.left));
-      traversedNodes.push(...this.inOrder(null, node.right));
-      traversedNodes.push(this.inOrder(node));
-
-      return traversedNodes;
-    }
-
+    var traversedNodes = [];
+    //check if  node is empty -> return array
+    if (!node) return traversedNodes;
     //traverse left subtree recursively
-    this.postOrder(callback, node.left);
+    traversedNodes.push(...this.postOrder(callback, node.left));
+
+    if (callback) callback(node);
 
     //traverse right subtree recursively
-    this.postOrder(callback, node.right);
+    traversedNodes.push(...this.postOrder(callback, node.right));
 
-    //root node last
-    callback(node);
+    traversedNodes.push(node);
+
+    if (!callback) return traversedNodes;
   }
 
   prettyPrint(node = this.rootNode, prefix = "", isLeft = true) {
@@ -217,10 +200,12 @@ class Tree {
 const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 test.insert(69);
-test.prettyPrint();
-
 test.deleteNode(67);
 test.prettyPrint();
 
 console.log(test.find(69));
 console.log(test.find(1000));
+
+console.log("In-order traversal without callback:", test.inOrder());
+console.log("Pre-order traversal without callback:", test.preOrder());
+console.log("Post-order traversal without callback:", test.postOrder());
